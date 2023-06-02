@@ -23,15 +23,49 @@ req.on('data',(chunk)=>
     body.push(chunk);
    })
 
-req.on('end',()=>
+// return req.on('end',()=>
+// {console.log(body);
+//     const parsedBody=Buffer.concat(body).toString().split('=')[1];
+//     console.log(parsedBody);
+//     fs.writeFileSync('user.txt',parsedBody);
+// res.statusCode=302; 
+// res.setHeader('Location', '/'); 
+// res.end();}
+// )
+//  req.on('end',()=>
+// {console.log(body);
+//     const parsedBody=Buffer.concat(body).toString().split('=')[1];
+//     console.log(parsedBody);
+//     fs.writeFileSync('user.txt',parsedBody);
+// res.statusCode=302; 
+// res.setHeader('Location', '/'); 
+// res.end();}                   
+// ) 
+// req.on('end',()=>                     ///all three ways work well just understand the concept...
+// {console.log(body);
+//     const parsedBody=Buffer.concat(body).toString().split('=')[1];
+//     console.log(parsedBody);
+//     fs.writeFileSync('user.txt',parsedBody);
+//     res.statusCode=302; 
+//     res.setHeader('Location', '/'); 
+//     res.end();
+// });
+req.on('end',()=>                   
 {console.log(body);
     const parsedBody=Buffer.concat(body).toString().split('=')[1];
     console.log(parsedBody);
-    fs.writeFileSync('user.txt',parsedBody);
+    fs.writeFile('user.txt',parsedBody,()=>
+    {                                                      //writefilesync(filename,variable) blocks the execution of next line until it writes the text.
+    res.statusCode=302;                                   //writefile(filename,variable,callback fn) never block jss keep going
+    res.setHeader('Location', '/'); 
+    res.end();
+    });
 });
-res.statusCode=302; 
-res.setHeader('Location', '/'); 
-res.end();}
+}
+// res.setHeader('Content-Type' , 'text/html');
+// res.write('<html>');
+// res.write('<head><title>MY NODE JS</title></head><body>HELL NODE JS</body></html>');
+
 };
 module.exports = requestHandler;
 //module.exports = {help:requestHandler};
